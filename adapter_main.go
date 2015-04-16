@@ -8,7 +8,7 @@
 // - RespondTo() to send a response message to a request
 //
 // Please take a look at the example and the samples in the testing directory for
-// an idea about the usage of the package
+// an idea about the usage of the package.
 package nsqAdapter
 
 import (
