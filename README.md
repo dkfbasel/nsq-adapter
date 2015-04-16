@@ -1,3 +1,5 @@
+[![GoDoc](https://godoc.org/github.com/tikiatua/nsq-adapter?status.svg)](https://godoc.org/github.com/tikiatua/nsq-adapter)
+
 # nsq-adapter
 A small adapter library that makes using the awesome nsq-service a snap
 
