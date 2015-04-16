@@ -6,10 +6,10 @@ import "github.com/bitly/go-nsq"
 // of struct that implements a HandleMessage method
 type nsqHandlerFunction func(nsqMessage *nsq.Message) error
 
-func nsqConsumer(topic string, channel string) (*nsq.Consumer, error) {
+func nsqConsumer(topic string, channel string, nsqConfig *nsq.Config) (*nsq.Consumer, error) {
 
 	// create a new nsq-consumer
-	consumer, err := nsq.NewConsumer(topic, channel, nsq.NewConfig())
+	consumer, err := nsq.NewConsumer(topic, channel, nsqConfig)
 	if err != nil {
 		return nil, err
 	}
@@ -23,5 +23,4 @@ func attachHandler(consumer *nsq.Consumer, handler nsqHandlerFunction, nsqlookup
 
 	// connect our consumer to the nsq-lookup-service
 	consumer.ConnectToNSQLookupd(nsqlookupdHttpAddress)
-
 }

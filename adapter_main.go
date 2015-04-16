@@ -19,8 +19,13 @@ import (
 )
 
 // NewNsqAdapter will create a new nsq-adapter using the given address to connect
-// to a nsqlookupd-service
+// to a nsqlookupd-service and use the default configuration for connections
 func New(serviceName string, nsqlookupHttpAddress string) *NsqAdapter {
+	return NewWithCustomConfig(serviceName, nsqlookupHttpAddress, nsq.NewConfig())
+}
+
+// NewWithCustomConfig will create a new nsq-adapter with a custom nsq-configuration
+func NewWithCustomConfig(serviceName string, nsqlookupHttpAddress string, config *nsq.Config) *NsqAdapter {
 
 	// initialize a new adapter
 	queue := NsqAdapter{
@@ -28,8 +33,8 @@ func New(serviceName string, nsqlookupHttpAddress string) *NsqAdapter {
 		nsqlookupAddress: nsqlookupHttpAddress,
 		consumers:        make(map[string]*nsq.Consumer),
 		requests:         make(map[string]chan Message),
+		config:           config,
 	}
-
 	return &queue
 }
 

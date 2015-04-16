@@ -4,8 +4,9 @@ import "github.com/bitly/go-nsq"
 
 // NsqAdapter is our main struct for external packages to interact with
 type NsqAdapter struct {
-	Name             string // then name of this service
-	nsqlookupAddress string // the address of the nsqlookup-service
+	Name             string      // then name of this service
+	config           *nsq.Config // the configuration for the nsq service
+	nsqlookupAddress string      // the address of the nsqlookup-service
 
 	producer  *nsq.Producer            // a producer to send messages
 	consumers map[string]*nsq.Consumer // a map of all our consumers

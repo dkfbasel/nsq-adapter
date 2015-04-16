@@ -7,7 +7,7 @@ import (
 )
 
 // nsqProducer will create a new producer connected to an nsqd service
-func nsqProducer(nsqlookupdHttpAddress string) (*nsq.Producer, error) {
+func nsqProducer(nsqlookupdHttpAddress string, nsqConfig *nsq.Config) (*nsq.Producer, error) {
 
 	// check with nsqlookupd if there are any nsqd-hosts
 	producers, errDiscover := discoverNsqd(nsqlookupdHttpAddress)
@@ -22,7 +22,7 @@ func nsqProducer(nsqlookupdHttpAddress string) (*nsq.Producer, error) {
 
 	// create a new producer to send messages
 	// note: this will publish to the first producers in the given list
-	producer, err := nsq.NewProducer(producers[0], nsq.NewConfig())
+	producer, err := nsq.NewProducer(producers[0], nsqConfig)
 	if err != nil {
 		return nil, err
 	}

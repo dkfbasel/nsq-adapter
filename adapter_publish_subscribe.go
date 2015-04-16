@@ -20,7 +20,7 @@ func (queue *NsqAdapter) Subscribe(topic string, channel string, messageChannel 
 	// create a new consumer if necessary
 	if ok == false {
 		// create a new non concurrent consumer
-		consumer, err = nsqConsumer(topic, channel)
+		consumer, err = nsqConsumer(topic, channel, queue.config)
 		if err != nil {
 			return err
 		}
@@ -67,7 +67,7 @@ func (queue *NsqAdapter) PublishMessage(topic string, message *Message) error {
 	// check if we do already have a producer for this topic
 	if queue.producer == nil {
 		// create a new producer
-		producer, err := nsqProducer(queue.nsqlookupAddress)
+		producer, err := nsqProducer(queue.nsqlookupAddress, queue.config)
 		if err != nil {
 			return err
 		}
