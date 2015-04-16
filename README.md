@@ -1,9 +1,9 @@
 [![GoDoc](https://godoc.org/github.com/tikiatua/nsq-adapter?status.svg)](https://godoc.org/github.com/tikiatua/nsq-adapter)
 
 # nsq-adapter
-A small adapter library that makes using the awesome nsq-service a snap
+A small adapter library that makes using the awesome nsq-service easier.
 
-The package nsqAdapter provides as thin wrapper around bitly's nsq-services to
+It provides as thin wrapper around bitly's nsq-services to
 simplify usage of nsq's asynchronous message queues for midsized projects.
 
 Basically, you define a new nsq-adapter struct and call the following methods:
