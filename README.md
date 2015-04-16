@@ -19,7 +19,7 @@ func main() {
 	queue := nsqAdapter.New("name-of-my-service", nsqlookupdAddress)
 	
 	// initialize the ability to handle responses.
-	// this will create a topic calles [name-of-service]-responses
+	// this will create a topic called [name-of-service]-responses
 	// that will be used to receive responses to requests issued
 	// from this service
 	queue.InitializeResponseHandling()
@@ -34,13 +34,13 @@ func main() {
 
 	// handle all incoming messages of our subscription
 	for {
-	  // wait for incoming messages
+  		// wait for incoming messages
 		message := <-messageChan
-		
+	
 		// handle the messages
 		fmt.Println("RECEIVED:", message.Payload)
 
-    // send a response if the message is a request
+    	// send a response if the message is a request
 		if message.MessageType == nsqAdapter.MessageTypeRequest {
 			queue.RespondTo(message, "this is an answer from name-of-my-service")
 		}
