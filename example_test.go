@@ -6,7 +6,7 @@ const (
 	nsqlookupdAddress string = "192.168.99.100:4161"
 )
 
-func ExampleMain() {
+func Example() {
 
 	// create a new nsqadapter with the name of our service
 	queue := New("name-of-my-service", nsqlookupdAddress)
