@@ -1,4 +1,4 @@
-// The package nsqAdapter provides as thin wrapper around bitly's nsq-services to
+// The package nsqAdapter provides a thin wrapper around bitly's nsq-services to
 // simplify usage of nsq's asynchronous message queues for midsized projects.
 //
 // Basically, you define a new nsq-adapter struct and call the following methods:
