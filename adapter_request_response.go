@@ -113,7 +113,7 @@ func (queue *NsqAdapter) SendRequest(topic string, payload interface{}, timeout 
 
 }
 
-// Respond to a message sent by a client
+// RespondTo will send a response to a message sent by a client via SendRequest
 func (queue *NsqAdapter) RespondTo(message Message, responsePayload interface{}) error {
 
 	// create a new response message
@@ -126,4 +126,10 @@ func (queue *NsqAdapter) RespondTo(message Message, responsePayload interface{})
 	responseMessage.Request.OriginId = message.Id
 
 	return queue.PublishMessage(message.Request.RespondTo, responseMessage)
+}
+
+// ForwardRequest will forward the given message to a different topic, the message payload can be appended or overwritten
+func (queue *NsqAdapter) ForwardRequest(topic string, message *Message) error {
+	// publish our message to the specified topic
+	return queue.PublishMessage(topic, message)
 }
