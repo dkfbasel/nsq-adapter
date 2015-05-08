@@ -12,6 +12,7 @@
 package nsqAdapter
 
 import (
+	"encoding/json"
 	"time"
 
 	"code.google.com/p/go-uuid/uuid"
@@ -57,7 +58,7 @@ func (queue *NsqAdapter) NewMessage(topic string, messageType string, payload in
 	message.StartTime = time.Now().String()
 
 	// set the payload
-	message.Payload = payload
+	message.Payload, _ = json.Marshal(payload)
 
 	// set the type
 	message.MessageType = messageType

@@ -1,6 +1,10 @@
 package nsqAdapter
 
-import "github.com/bitly/go-nsq"
+import (
+	"encoding/json"
+
+	"github.com/bitly/go-nsq"
+)
 
 // NsqAdapter is our main struct for external packages to interact with
 type NsqAdapter struct {
@@ -17,12 +21,12 @@ type NsqAdapter struct {
 
 // Message is a struct to hold all messages sent over nsq
 type Message struct {
-	Id        string      // a unique id for the message
-	From      string      // the originating service
-	To        string      // the topic that the message is posted to
-	StartTime string      // the time the processing was started
-	EndTime   string      // the time the process has ended
-	Payload   interface{} // the payload of the data
+	Id        string          // a unique id for the message
+	From      string          // the originating service
+	To        string          // the topic that the message is posted to
+	StartTime string          // the time the processing was started
+	EndTime   string          // the time the process has ended
+	Payload   json.RawMessage // the payload of the data
 
 	MessageType string  // the type of message (i.e. broadcast, request, response)
 	Request     Request // specific information for requests
