@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"sync"
 	"time"
+
+	"github.com/bitly/go-nsq"
 )
 
 const (
@@ -13,16 +15,24 @@ const (
 )
 
 // InitResponseHandling will register a consumer on a topic called [NAME]-responses
-func (queue *NsqAdapter) InitializeResponseHandling() {
+func (queue *NsqAdapter) InitializeResponseHandling() error {
 
 	// create a new channel that receives all responses
 	responses := make(chan Message)
 
+	// create a an ephemeral topic (will disapear if no more clients connected)
+	topic := queue.Name + responseSuffix + "#ephemeral"
+
+	// check if the topic is valid
+	if nsq.IsValidTopicName(topic) == false {
+		return errors.New("This is not a valid topic name: " + queue.Name + responseSuffix)
+	}
+
 	// publish an heartbeat message to the queue to handle request promptly from the start
-	queue.Publish(queue.Name+responseSuffix, "init")
+	queue.Publish(topic, "init")
 
 	// create a new consumer to handle responses for requests from this service
-	queue.Subscribe(queue.Name+responseSuffix, responseChannelName, responses)
+	queue.Subscribe(topic, responseChannelName, responses)
 
 	// handle the responses in a separate go-routine
 	go func() {
@@ -55,6 +65,8 @@ func (queue *NsqAdapter) InitializeResponseHandling() {
 			}
 		}
 	}()
+
+	return nil
 }
 
 // SendRequest will send the given message to the given topic and wait for a response
