@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	nsqlookupd = "192.168.99.100:4161"
+	nsqlookupd = "nsqlookupd:4161"
 )
 
 func main() {
