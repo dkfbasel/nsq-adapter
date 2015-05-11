@@ -20,19 +20,20 @@ func (queue *NsqAdapter) InitializeResponseHandling() error {
 	// create a new channel that receives all responses
 	responses := make(chan Message)
 
-	// create a an ephemeral topic (will disapear if no more clients connected)
-	topic := queue.Name + responseSuffix + "#ephemeral"
+	// create a response topic
+	topic := queue.Name + responseSuffix
 
 	// check if the topic is valid
 	if nsq.IsValidTopicName(topic) == false {
-		return errors.New("This is not a valid topic name: " + queue.Name + responseSuffix)
+		return errors.New("This is not a valid topic name: " + topic)
 	}
 
 	// publish an heartbeat message to the queue to handle request promptly from the start
 	queue.Publish(topic, "init")
 
 	// create a new consumer to handle responses for requests from this service
-	queue.Subscribe(topic, responseChannelName, responses)
+	// use an ephemeral channel that disappears as soon as the service is stopped
+	queue.Subscribe(topic, responseChannelName+"#ephemeral", responses)
 
 	// handle the responses in a separate go-routine
 	go func() {
