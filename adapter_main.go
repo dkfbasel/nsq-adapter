@@ -69,20 +69,28 @@ func (queue *NsqAdapter) NewMessage(topic string, messageType string, payload in
 // Handle will start handling all incoming messages with the given function in a separate go routine
 func (queue *NsqAdapter) Handle(topic string, channel string, handleFunction func(message Message)) {
 
-	// create a channel that will receive message from
-	// a topic we would like to subscribe to
-	messageChan := make(chan Message)
+	// start handling the topic immediately in it's own routine
+	go func() {
+		// create a channel that will receive message from
+		// a topic we would like to subscribe to
+		messageChan := make(chan Message)
 
-	// subscribe to all messages posted to the fetch process
-	queue.Subscribe(topic, channel, messageChan)
+		// subscribe to all messages posted to the fetch process
+		queue.Subscribe(topic, channel, messageChan)
 
-	// handle all incoming requests for fetching data
-	for {
-		// wait for incoming messages
-		message := <-messageChan
+		// handle all incoming requests for fetching data
+		for {
+			// wait for incoming messages
+			message := <-messageChan
 
-		// start processing our data
-		go handleFunction(message)
-	}
+			// start processing our data
+			go handleFunction(message)
+		}
+	}()
+}
 
+// Process will simply block execution so the requests to the specified topics can be processed
+func (queue *NsqAdapter) Process() {
+	block := make(chan struct{})
+	<-block
 }
